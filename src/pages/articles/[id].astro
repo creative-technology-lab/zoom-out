@@ -20,6 +20,7 @@ function formatDate(date: Date): string {
 }
 
 const tags = (article.data.tags ?? []).map(t => t.replace(/-/g, ' '));
+const firstLetter = article.data.title.charAt(0).toUpperCase();
 ---
 
 <Base title={`${article.data.title} — Zoom Out`}>
@@ -33,37 +34,42 @@ const tags = (article.data.tags ?? []).map(t => t.replace(/-/g, ' '));
         Back
       </a>
 
-      <header class="mt-8">
-        <time class="text-sm text-(--color-muted)">{formatDate(article.data.created)}</time>
-        <h1 class="font-heading text-3xl md:text-4xl lg:text-[2.75rem] font-bold mt-3 leading-tight tracking-tight">
-          {article.data.title}
-        </h1>
-        {tags.length > 0 && (
-          <div class="mt-5 flex flex-wrap gap-2">
-            {tags.map(tag => (
-              <span class="px-2.5 py-0.5 text-xs rounded-full text-(--color-muted) border border-(--color-border)">
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+      <header class="relative mt-10 overflow-hidden">
+        <div class="absolute -top-6 -right-4 md:-right-8 depth-letter text-[14rem] md:text-[20rem] select-none" aria-hidden="true">
+          {firstLetter}
+        </div>
+        <div class="relative">
+          <time class="text-sm text-(--color-muted) tracking-wide">{formatDate(article.data.created)}</time>
+          <h1 class="font-heading text-3xl md:text-4xl lg:text-[2.75rem] font-bold mt-4 leading-tight tracking-tight max-w-2xl">
+            {article.data.title}
+          </h1>
+          {tags.length > 0 && (
+            <div class="mt-6 flex flex-wrap gap-2">
+              {tags.map(tag => (
+                <span class="px-2.5 py-0.5 text-xs rounded-full text-(--color-muted) border border-(--color-border)">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </header>
 
-      <hr class="my-10 border-(--color-border)" />
+      <div class="mt-12 mb-10 h-px bg-gradient-to-r from-(--color-border) via-(--color-border) to-transparent"></div>
 
       <div class="prose">
         <Content />
       </div>
 
-      <hr class="my-10 border-(--color-border)" />
-
-      <a
-        href="/"
-        class="inline-flex items-center gap-1 text-sm text-(--color-muted) hover:text-(--color-fg) transition-colors"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        All articles
-      </a>
+      <div class="mt-16 pt-10 border-t border-(--color-border)">
+        <a
+          href="/"
+          class="inline-flex items-center gap-1 text-sm text-(--color-muted) hover:text-(--color-fg) transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          All articles
+        </a>
+      </div>
     </div>
   </article>
 </Base>

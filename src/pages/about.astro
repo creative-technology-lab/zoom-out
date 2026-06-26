@@ -3,32 +3,37 @@ import Base from '../layouts/Base.astro';
 ---
 
 <Base title="About — Zoom Out">
-  <section class="pt-16 pb-24">
-    <div class="max-w-3xl mx-auto px-6">
-      <h1 class="font-heading text-3xl md:text-4xl font-bold tracking-tight">About</h1>
+  <section class="relative pt-20 md:pt-28 pb-24 overflow-hidden">
+    <div class="max-w-3xl mx-auto px-6 relative">
+      <div class="absolute -top-4 -right-4 md:-right-8 depth-letter text-[14rem] md:text-[20rem] select-none" aria-hidden="true">
+        A
+      </div>
+      <div class="relative">
+        <h1 class="font-heading text-4xl md:text-5xl font-bold tracking-tight">About</h1>
 
-      <div class="mt-8 prose">
-        <p>
-          <strong>Zoom Out</strong> is a publication by <a href="https://creativetechnologylab.io">Russell Hall</a>, exploring how creative technology, AI architecture, and distributed intelligence are reshaping how organisations build, operate, and deliver experiences.
-        </p>
-        <p>
-          The name reflects the approach: stepping back from the immediate tooling conversation to see the larger structural shifts happening underneath. Most technology writing focuses on what's new. This writing focuses on what's changing.
-        </p>
-        <p>
-          Russell is a creative technologist who works at both the executive level driving strategy and within delivery teams writing code. His work spans spatial computing, AI systems, experience design, and organisational transformation across creative agencies, enterprises, and startups.
-        </p>
-        <p>
-          Topics covered here include intelligence architecture, agentic systems, creative agency operating models, governance as design, and the emerging patterns of human-AI collaboration.
-        </p>
+        <div class="mt-10 prose">
+          <p>
+            <strong>Zoom Out</strong> is a publication by <a href="https://creativetechnologylab.io">Russell Hall</a>, exploring how creative technology, AI architecture, and distributed intelligence are reshaping how organisations build, operate, and deliver experiences.
+          </p>
+          <p>
+            The name reflects the approach: stepping back from the immediate tooling conversation to see the larger structural shifts happening underneath. Most technology writing focuses on what's new. This writing focuses on what's changing.
+          </p>
+          <p>
+            Russell is a creative technologist who works at both the executive level driving strategy and within delivery teams writing code. His work spans spatial computing, AI systems, experience design, and organisational transformation across creative agencies, enterprises, and startups.
+          </p>
+          <p>
+            Topics covered here include intelligence architecture, agentic systems, creative agency operating models, governance as design, and the emerging patterns of human-AI collaboration.
+          </p>
 
-        <hr />
+          <hr />
 
-        <h2>Get in touch</h2>
-        <ul>
-          <li>Email: <a href="mailto:hello@creativetechnologylab.io">hello@creativetechnologylab.io</a></li>
-          <li>LinkedIn: <a href="https://www.linkedin.com/in/russellhall101/" target="_blank" rel="noopener noreferrer">Russell Hall</a></li>
-          <li>Consulting: <a href="https://creativetechnologylab.io">Creative Technology Lab</a></li>
-        </ul>
+          <h2>Get in touch</h2>
+          <ul>
+            <li>Email: <a href="mailto:hello@creativetechnologylab.io">hello@creativetechnologylab.io</a></li>
+            <li>LinkedIn: <a href="https://www.linkedin.com/in/russellhall101/" target="_blank" rel="noopener noreferrer">Russell Hall</a></li>
+            <li>Consulting: <a href="https://creativetechnologylab.io">Creative Technology Lab</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>

@@ -29,6 +29,7 @@
   --color-brand: #18181b;
   --color-brand-muted: #52525b;
   --color-link: #2563eb;
+  --color-depth: #18181b;
 }
 
 :root {
@@ -45,6 +46,7 @@
   --color-brand: #fafafa;
   --color-brand-muted: #a1a1aa;
   --color-link: #60a5fa;
+  --color-depth: #fafafa;
 }
 
 body {
@@ -64,6 +66,28 @@ html {
 ::selection {
   background-color: var(--color-brand);
   color: var(--color-bg);
+}
+
+/* Depth layers — the core visual metaphor */
+
+.depth-number {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-depth);
+  opacity: 0.04;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+.depth-letter {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-depth);
+  opacity: 0.03;
+  line-height: 0.8;
+  user-select: none;
+  pointer-events: none;
 }
 
 /* Article prose */

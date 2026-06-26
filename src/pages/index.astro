@@ -12,46 +12,57 @@ function formatDate(date: Date): string {
   return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-const articles = sorted.map(a => ({
+const articles = sorted.map((a, i) => ({
   id: a.id,
   title: a.data.title,
   date: formatDate(a.data.created),
   tags: (a.data.tags ?? []).map(t => t.replace(/-/g, ' ')),
+  num: String(i + 1).padStart(2, '0'),
 }));
 ---
 
 <Base title="Zoom Out">
-  <section class="pt-16 pb-8">
-    <div class="max-w-3xl mx-auto px-6">
-      <h1 class="font-heading text-3xl md:text-4xl font-bold tracking-tight">
-        Zoom Out
-      </h1>
-      <p class="mt-3 text-(--color-muted) text-lg leading-relaxed max-w-xl">
-        Perspectives on creative technology, AI architecture, and the future of digital experiences.
-      </p>
+  <section class="relative pt-20 md:pt-28 pb-16 overflow-hidden">
+    <div class="max-w-3xl mx-auto px-6 relative">
+      <div class="absolute -top-8 -left-4 md:-left-12 depth-letter text-[12rem] md:text-[18rem] select-none" aria-hidden="true">
+        ZO
+      </div>
+      <div class="relative">
+        <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+          Zoom Out
+        </h1>
+        <p class="mt-5 text-(--color-muted) text-lg md:text-xl leading-relaxed max-w-lg tracking-wide font-light">
+          Perspectives on creative technology, AI architecture, and the future of digital experiences.
+        </p>
+      </div>
     </div>
   </section>
 
   <section class="pb-24">
     <div class="max-w-3xl mx-auto px-6">
-      <div class="divide-y divide-(--color-border)">
+      <div class="border-t border-(--color-border)">
         {articles.map(article => (
-          <a href={`/articles/${article.id}`} class="group block py-8 first:pt-4">
-            <time class="text-xs text-(--color-muted) font-medium uppercase tracking-wider">
-              {article.date}
-            </time>
-            <h2 class="font-heading text-xl md:text-2xl font-bold mt-2 group-hover:text-(--color-link) transition-colors">
-              {article.title}
-            </h2>
-            {article.tags.length > 0 && (
-              <div class="mt-3 flex flex-wrap gap-1.5">
-                {article.tags.slice(0, 4).map(tag => (
-                  <span class="px-2 py-0.5 text-xs rounded-full text-(--color-muted) border border-(--color-border)">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
+          <a href={`/articles/${article.id}`} class="group block relative py-10 border-b border-(--color-border)">
+            <div class="absolute right-0 top-4 depth-number text-[5rem] md:text-[7rem]" aria-hidden="true">
+              {article.num}
+            </div>
+            <div class="relative">
+              <time class="text-xs text-(--color-muted) font-medium uppercase tracking-widest">
+                {article.date}
+              </time>
+              <h2 class="font-heading text-xl md:text-2xl font-bold mt-2.5 pr-16 md:pr-24 group-hover:text-(--color-link) transition-colors leading-snug">
+                {article.title}
+              </h2>
+              {article.tags.length > 0 && (
+                <div class="mt-4 flex flex-wrap gap-1.5">
+                  {article.tags.slice(0, 4).map(tag => (
+                    <span class="px-2.5 py-0.5 text-xs rounded-full text-(--color-muted) border border-(--color-border)">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
           </a>
         ))}
       </div>

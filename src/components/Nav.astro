@@ -1,18 +1,20 @@
 ---
 const currentPath = Astro.url.pathname;
+const isArticle = currentPath.startsWith('/articles/') && currentPath !== '/articles/';
 ---
 
 <header class="sticky top-0 z-50 w-full border-b border-(--color-border) bg-(--color-bg)/80 backdrop-blur-lg">
   <div class="max-w-3xl mx-auto flex h-14 items-center justify-between px-6">
-    <a href="/" class="font-heading font-bold text-lg tracking-tight text-(--color-brand)">
+    <a href="/" class="font-heading font-bold text-lg tracking-tight text-(--color-brand) flex items-baseline gap-1.5">
       Zoom Out
+      <span class="text-[0.625rem] font-normal text-(--color-muted) tracking-widest uppercase hidden sm:inline">by Russell Hall</span>
     </a>
     <nav class="flex items-center gap-6">
       <a
         href="/"
         class:list={[
           'text-sm font-medium transition-colors',
-          currentPath === '/' ? 'text-(--color-fg)' : 'text-(--color-muted) hover:text-(--color-fg)',
+          currentPath === '/' || isArticle ? 'text-(--color-fg)' : 'text-(--color-muted) hover:text-(--color-fg)',
         ]}
       >
         Articles
