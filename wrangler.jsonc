@@ -1,0 +1,16 @@
+{
+	"compatibility_date": "2026-06-26",
+	"compatibility_flags": ["global_fetch_strictly_public", "nodejs_compat"],
+	"name": "zoom-out",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"routes": [
+		{ "pattern": "zoom-out.creativetechnologylab.io", "custom_domain": true }
+	],
+	"observability": {
+		"enabled": true
+	}
+}
