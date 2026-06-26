@@ -1,31 +1,29 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
-import { matchTerritory } from '../../lib/territories';
+import { matchTerritory, territories } from '../../lib/territories';
 
 export async function getStaticPaths() {
-  const articles = await getCollection('articles', ({ data, id }) => {
-    return id !== '2026-05-16-example-idea' && data.title !== '';
-  });
-  return articles.map(article => ({
-    params: { id: article.id },
-    props: { article },
+  const papers = await getCollection('visionPapers');
+  return papers.map(paper => ({
+    params: { id: paper.id },
+    props: { paper },
   }));
 }
 
-const { article } = Astro.props;
-const { Content } = await render(article);
+const { paper } = Astro.props;
+const { Content } = await render(paper);
 
 function formatDate(date: Date): string {
   return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-const tags = (article.data.tags ?? []).map(t => t.replace(/-/g, ' '));
-const territory = matchTerritory(article.data.tags ?? []);
-const firstLetter = article.data.title.charAt(0).toUpperCase();
+const tags = (paper.data.tags ?? []).filter(t => !t.includes('/'));
+const territory = matchTerritory(paper.data.tags ?? []);
+const firstLetter = paper.data.title.charAt(0).toUpperCase();
 ---
 
-<Base title={`${article.data.title} — Zoom Out`}>
+<Base title={`${paper.data.title} — Zoom Out`}>
   <article class="pt-12 pb-24">
     <div class="max-w-3xl mx-auto px-6">
       <a
@@ -42,8 +40,8 @@ const firstLetter = article.data.title.charAt(0).toUpperCase();
         </div>
         <div class="relative">
           <div class="flex items-center gap-3 mb-3">
-            <span class="text-[0.625rem] font-medium uppercase tracking-widest text-(--color-muted)">
-              Article
+            <span class="text-[0.625rem] font-medium uppercase tracking-widest px-2 py-0.5 rounded bg-(--color-brand)/10 text-(--color-brand-muted)">
+              White Paper
             </span>
             {territory && (
               <span class="text-[0.625rem] font-medium uppercase tracking-widest text-(--color-muted)">
@@ -51,15 +49,15 @@ const firstLetter = article.data.title.charAt(0).toUpperCase();
               </span>
             )}
           </div>
-          <time class="text-sm text-(--color-muted) tracking-wide">{formatDate(article.data.created)}</time>
+          <time class="text-sm text-(--color-muted) tracking-wide">{formatDate(paper.data.created)}</time>
           <h1 class="font-heading text-3xl md:text-4xl lg:text-[2.75rem] font-bold mt-4 leading-tight tracking-tight max-w-2xl">
-            {article.data.title}
+            {paper.data.title}
           </h1>
           {tags.length > 0 && (
             <div class="mt-6 flex flex-wrap gap-2">
               {tags.map(tag => (
                 <span class="px-2.5 py-0.5 text-xs rounded-full text-(--color-muted) border border-(--color-border)">
-                  {tag}
+                  {tag.replace(/-/g, ' ')}
                 </span>
               ))}
             </div>

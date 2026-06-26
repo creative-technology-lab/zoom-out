@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { territories } from '../lib/territories';
 ---
 
 <Base title="About — Zoom Out">
@@ -13,7 +14,7 @@ import Base from '../layouts/Base.astro';
 
         <div class="mt-10 prose">
           <p>
-            <strong>Zoom Out</strong> is a publication by <a href="https://creativetechnologylab.io">Russell Hall</a>, exploring how creative technology, AI architecture, and distributed intelligence are reshaping how organisations build, operate, and deliver experiences.
+            <strong>Zoom Out</strong> is a publication by <a href="https://creativetechnologylab.io">Russell Hall</a>. Everything here radiates from one epicentre: <strong>the future of experience</strong>.
           </p>
           <p>
             The name reflects the approach: stepping back from the immediate tooling conversation to see the larger structural shifts happening underneath. Most technology writing focuses on what's new. This writing focuses on what's changing.
@@ -21,12 +22,49 @@ import Base from '../layouts/Base.astro';
           <p>
             Russell is a creative technologist who works at both the executive level driving strategy and within delivery teams writing code. His work spans spatial computing, AI systems, experience design, and organisational transformation across creative agencies, enterprises, and startups.
           </p>
-          <p>
-            Topics covered here include intelligence architecture, agentic systems, creative agency operating models, governance as design, and the emerging patterns of human-AI collaboration.
-          </p>
+        </div>
 
+        <div class="mt-14">
+          <h2 class="font-heading text-2xl font-bold tracking-tight">The content model</h2>
+          <p class="mt-2 text-(--color-muted) text-sm">Four layers, one epicentre. Six talking territories.</p>
+
+          <div class="mt-8 space-y-6">
+            {territories.map((t, i) => (
+              <div class="flex gap-4 items-start">
+                <span class="depth-number text-3xl shrink-0 w-8 text-right" style="opacity: 0.15;" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 class="font-heading font-semibold">{t.name}</h3>
+                  <p class="text-sm text-(--color-muted) mt-0.5">{t.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="mt-14">
+          <h2 class="font-heading text-2xl font-bold tracking-tight">Content types</h2>
+          <div class="mt-6 space-y-4">
+            <div class="flex gap-4 items-start">
+              <span class="shrink-0 text-[0.625rem] font-medium uppercase tracking-widest px-2 py-0.5 rounded bg-(--color-brand)/10 text-(--color-brand-muted) mt-0.5">White Paper</span>
+              <div>
+                <p class="font-heading font-semibold">"Here is what I see."</p>
+                <p class="text-sm text-(--color-muted) mt-0.5">800 to 1,200 words. The anchor pieces. Concrete, architectural, solution-oriented.</p>
+              </div>
+            </div>
+            <div class="flex gap-4 items-start">
+              <span class="shrink-0 text-[0.625rem] font-medium uppercase tracking-widest px-2 py-0.5 rounded text-(--color-muted) mt-0.5">Article</span>
+              <div>
+                <p class="font-heading font-semibold">"Here is what I believe and why."</p>
+                <p class="text-sm text-(--color-muted) mt-0.5">1,800 to 2,500 words. Published every two to three weeks. The arguments built on the vision.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-14 prose">
           <hr />
-
           <h2>Get in touch</h2>
           <ul>
             <li>Email: <a href="mailto:hello@creativetechnologylab.io">hello@creativetechnologylab.io</a></li>

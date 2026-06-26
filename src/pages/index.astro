@@ -1,28 +1,66 @@
 ---
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
+import { territories, matchTerritory } from '../lib/territories';
 
 const allArticles = await getCollection('articles', ({ data, id }) => {
   return id !== '2026-05-16-example-idea' && data.title !== '';
 });
 
-const sorted = allArticles.sort((a, b) => b.data.created.getTime() - a.data.created.getTime());
+const allVisionPapers = await getCollection('visionPapers');
 
 function formatDate(date: Date): string {
   return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
-const articles = sorted.map((a, i) => ({
-  id: a.id,
-  title: a.data.title,
-  date: formatDate(a.data.created),
-  tags: (a.data.tags ?? []).map(t => t.replace(/-/g, ' ')),
-  num: String(i + 1).padStart(2, '0'),
-}));
+type ContentItem = {
+  id: string;
+  title: string;
+  date: string;
+  created: Date;
+  tags: string[];
+  kind: 'vision-paper' | 'article';
+  collection: 'visionPapers' | 'articles';
+};
+
+const allContent: ContentItem[] = [
+  ...allArticles.map(a => ({
+    id: a.id,
+    title: a.data.title,
+    date: formatDate(a.data.created),
+    created: a.data.created,
+    tags: a.data.tags ?? [],
+    kind: 'article' as const,
+    collection: 'articles' as const,
+  })),
+  ...allVisionPapers.map(a => ({
+    id: a.id,
+    title: a.data.title,
+    date: formatDate(a.data.created),
+    created: a.data.created,
+    tags: a.data.tags ?? [],
+    kind: 'vision-paper' as const,
+    collection: 'visionPapers' as const,
+  })),
+];
+
+const territorySections = territories.map(t => {
+  const items = allContent
+    .filter(c => matchTerritory(c.tags)?.id === t.id)
+    .sort((a, b) => {
+      if (a.kind !== b.kind) return a.kind === 'vision-paper' ? -1 : 1;
+      return b.created.getTime() - a.created.getTime();
+    });
+  return { ...t, items };
+});
+
+const unmatched = allContent
+  .filter(c => !matchTerritory(c.tags))
+  .sort((a, b) => b.created.getTime() - a.created.getTime());
 ---
 
 <Base title="Zoom Out">
-  <section class="relative pt-20 md:pt-28 pb-16 overflow-hidden">
+  <section class="relative pt-20 md:pt-28 pb-12 overflow-hidden">
     <div class="max-w-3xl mx-auto px-6 relative">
       <div class="absolute -top-8 -left-4 md:-left-12 depth-letter text-[12rem] md:text-[18rem] select-none" aria-hidden="true">
         ZO
@@ -32,40 +70,103 @@ const articles = sorted.map((a, i) => ({
           Zoom Out
         </h1>
         <p class="mt-5 text-(--color-muted) text-lg md:text-xl leading-relaxed max-w-lg tracking-wide font-light">
-          Perspectives on creative technology, AI architecture, and the future of digital experiences.
+          The future of experience.
         </p>
       </div>
     </div>
   </section>
 
+  <nav class="sticky top-14 z-40 border-b border-(--color-border) bg-(--color-bg)/80 backdrop-blur-lg">
+    <div class="max-w-3xl mx-auto px-6 flex gap-1 overflow-x-auto py-2 scrollbar-none">
+      {territorySections.map((t) => (
+        t.items.length > 0 && (
+          <a
+            href={`#${t.id}`}
+            class="shrink-0 px-3 py-1.5 text-xs font-medium rounded-full border border-(--color-border) text-(--color-muted) hover:text-(--color-fg) hover:border-(--color-brand-muted) transition-colors"
+          >
+            {t.name}
+          </a>
+        )
+      ))}
+      {unmatched.length > 0 && (
+        <a
+          href="#more"
+          class="shrink-0 px-3 py-1.5 text-xs font-medium rounded-full border border-(--color-border) text-(--color-muted) hover:text-(--color-fg) hover:border-(--color-brand-muted) transition-colors"
+        >
+          More
+        </a>
+      )}
+    </div>
+  </nav>
+
   <section class="pb-24">
     <div class="max-w-3xl mx-auto px-6">
-      <div class="border-t border-(--color-border)">
-        {articles.map(article => (
-          <a href={`/articles/${article.id}`} class="group block relative py-10 border-b border-(--color-border)">
-            <div class="absolute right-0 top-4 depth-number text-[5rem] md:text-[7rem]" aria-hidden="true">
-              {article.num}
+      {territorySections.map((territory, ti) => (
+        territory.items.length > 0 && (
+          <div id={territory.id} class="pt-16 scroll-mt-28">
+            <div class="relative mb-6">
+              <div class="absolute -top-2 -right-2 md:-right-6 depth-number text-[4rem] md:text-[5.5rem]" aria-hidden="true">
+                {String(ti + 1).padStart(2, '0')}
+              </div>
+              <div class="relative">
+                <h2 class="font-heading text-2xl md:text-3xl font-bold tracking-tight">
+                  {territory.name}
+                </h2>
+                <p class="text-sm text-(--color-muted) mt-1 tracking-wide">
+                  {territory.subtitle}
+                </p>
+              </div>
             </div>
-            <div class="relative">
-              <time class="text-xs text-(--color-muted) font-medium uppercase tracking-widest">
-                {article.date}
-              </time>
-              <h2 class="font-heading text-xl md:text-2xl font-bold mt-2.5 pr-16 md:pr-24 group-hover:text-(--color-link) transition-colors leading-snug">
-                {article.title}
-              </h2>
-              {article.tags.length > 0 && (
-                <div class="mt-4 flex flex-wrap gap-1.5">
-                  {article.tags.slice(0, 4).map(tag => (
-                    <span class="px-2.5 py-0.5 text-xs rounded-full text-(--color-muted) border border-(--color-border)">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
+
+            <div class="border-t border-(--color-border)">
+              {territory.items.map(item => (
+                <a
+                  href={item.collection === 'visionPapers' ? `/vision-papers/${item.id}` : `/articles/${item.id}`}
+                  class:list={[
+                    'group block border-b border-(--color-border)',
+                    item.kind === 'vision-paper' ? 'py-6' : 'py-4',
+                  ]}
+                >
+                  <span class:list={[
+                    'block text-[0.5625rem] uppercase tracking-widest mb-1',
+                    item.kind === 'vision-paper' ? 'text-(--color-brand-muted) font-semibold' : 'text-(--color-muted)',
+                  ]}>
+                    {item.kind === 'vision-paper' ? 'white paper' : 'article'}
+                  </span>
+                  <h3 class:list={[
+                    'font-heading group-hover:text-(--color-link) transition-colors leading-snug',
+                    item.kind === 'vision-paper'
+                      ? 'text-lg md:text-xl font-bold'
+                      : 'text-sm md:text-base font-medium text-(--color-brand-muted)',
+                  ]}>
+                    {item.title}
+                  </h3>
+                </a>
+              ))}
             </div>
-          </a>
-        ))}
-      </div>
+          </div>
+        )
+      ))}
+
+      {unmatched.length > 0 && (
+        <div id="more" class="pt-16 scroll-mt-28">
+          <div class="relative mb-6">
+            <h2 class="font-heading text-2xl md:text-3xl font-bold tracking-tight">More</h2>
+          </div>
+          <div class="border-t border-(--color-border)">
+            {unmatched.map(item => (
+              <a
+                href={item.collection === 'visionPapers' ? `/vision-papers/${item.id}` : `/articles/${item.id}`}
+                class="group block py-4 border-b border-(--color-border)"
+              >
+                <h3 class="font-heading text-sm md:text-base font-medium text-(--color-brand-muted) group-hover:text-(--color-link) transition-colors leading-snug">
+                  {item.title}
+                </h3>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   </section>
 </Base>
