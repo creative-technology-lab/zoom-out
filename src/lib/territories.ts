@@ -33,7 +33,7 @@ export const territories: Territory[] = [
     name: 'The Tools',
     subtitle: 'Tools that deliver the future of experience',
     description: 'The products and platforms that underpin Return on Experience — agentic orchestration, personalisation engines, and the tools brands need.',
-    tagMatches: ['ai-agents', 'agentic-workflows', 'octopus', 'synthetic-users'],
+    tagMatches: ['ai-agents', 'agentic-workflows', 'octopus', 'synthetic-users', 'agencyos', 'agency-operations'],
   },
   {
     id: 'the-consumer',
