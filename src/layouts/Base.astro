@@ -6,9 +6,10 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  fullscreen?: boolean;
 }
 
-const { title, description = 'Perspectives on creative technology, AI architecture, and the future of digital experiences. By Russell Hall.' } = Astro.props;
+const { title, description = 'Perspectives on creative technology, AI architecture, and the future of digital experiences. By Russell Hall.', fullscreen = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://zoom-out.creativetechnologylab.io');
 ---
 
@@ -34,9 +35,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://zoom-out
   </head>
   <body class="min-h-screen flex flex-col">
     <Nav />
-    <main class="flex-1">
+    <main class="flex-1 flex flex-col">
       <slot />
     </main>
-    <Footer />
+    {!fullscreen && <Footer />}
   </body>
 </html>

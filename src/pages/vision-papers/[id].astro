@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import SpeedReader from '../../components/SpeedReader.astro';
 import { getCollection, render } from 'astro:content';
 import { matchTerritory, territories } from '../../lib/territories';
 
@@ -65,7 +66,16 @@ const firstLetter = paper.data.title.charAt(0).toUpperCase();
         </div>
       </header>
 
-      <div class="mt-12 mb-10 h-px bg-gradient-to-r from-(--color-border) via-(--color-border) to-transparent"></div>
+      <div class="mt-12 mb-10 flex items-center gap-4">
+        <div class="flex-1 h-px bg-gradient-to-r from-(--color-border) via-(--color-border) to-transparent"></div>
+        <button
+          id="sr-trigger"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-(--color-muted) border border-(--color-border) rounded-full hover:text-(--color-fg) hover:border-(--color-muted) transition-colors cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Speed Read
+        </button>
+      </div>
 
       <div class="prose">
         <Content />
@@ -82,4 +92,5 @@ const firstLetter = paper.data.title.charAt(0).toUpperCase();
       </div>
     </div>
   </article>
+  <SpeedReader />
 </Base>
